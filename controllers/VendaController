@@ -1,0 +1,70 @@
+# controllers/venda_controller.py
+from flask import Blueprint, request, jsonify
+from services.venda_service import VendaService
+from models.venda import Venda
+from models.item_venda import ItemVenda
+from database.connection import DatabaseConnection
+
+# Criar Blueprint para vendas
+venda_bp = Blueprint("venda", __name__)
+
+# Instanciar conexão e service
+db = DatabaseConnection().connect()
+venda_service = VendaService(db)
+
+# Rotas
+@venda_bp.route("/vendas", methods=["POST"])
+def criar_venda():
+    data = request.json
+    try:
+        venda = Venda(
+            id_venda=None,
+            cliente_id=data.get("cliente_id"),
+            data=data.get("data"),
+            total=0  # calculado no service
+        )
+        itens = [
+            ItemVenda(
+                id_item=None,
+                venda_id=None,
+                produto_id=item.get("produto_id"),
+                quantidade=item.get("quantidade"),
+                preco_unitario=item.get("preco_unitario")
+            )
+            for item in data.get("itens", [])
+        ]
+        id_venda = venda_service.criar_venda(venda, itens)
+        return jsonify({"message": "Venda criada com sucesso", "id": id_venda}), 201
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+@venda_bp.route("/vendas/<int:id_venda>", methods=["GET"])
+def obter_venda(id_venda):
+    venda = venda_service.obter_venda(id_venda)
+    if venda:
+        return jsonify(venda.__dict__), 200
+    return jsonify({"error": "Venda não encontrada"}), 404
+
+@venda_bp.route("/vendas/<int:id_venda>", methods=["PUT"])
+def atualizar_venda(id_venda):
+    data = request.json
+    try:
+        venda = Venda(
+            id_venda=id_venda,
+            cliente_id=data.get("cliente_id"),
+            data=data.get("data"),
+            total=data.get("total", 0)
+        )
+        linhas = venda_service.atualizar_venda(venda)
+        if linhas:
+            return jsonify({"message": "Venda atualizada com sucesso"}), 200
+        return jsonify({"error": "Venda não encontrada"}), 404
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+@venda_bp.route("/vendas/<int:id_venda>", methods=["DELETE"])
+def excluir_venda(id_venda):
+    linhas = venda_service.excluir_venda(id_venda)
+    if linhas:
+        return jsonify({"message": "Venda excluída com sucesso"}), 200
+    return jsonify({"error": "Venda não encontrada"}), 404
