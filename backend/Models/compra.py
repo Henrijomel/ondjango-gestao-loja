@@ -56,7 +56,7 @@ class Compra(BaseModel):
         valor_total: Optional[float] = 0.0,
         desconto: Optional[float] = 0.0,
         valor_final: Optional[float] = 0.0,
-        moeda: Optional[str] = "EUR",
+        moeda: Optional[str] = "KZ",
         condicoes_pagamento: Optional[str] = "30 dias",
         data_pagamento: Optional[datetime] = None,
         pago: bool = False,

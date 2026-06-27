@@ -222,3 +222,4 @@ class Cliente(BaseModel):
         """String amigável"""
         status = "✓ Ativo" if self.ativo else "✗ Inativo"
         return f"{self.get_nome_completo()} ({self.email}) - {status}"
+

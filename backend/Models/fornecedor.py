@@ -8,7 +8,6 @@ from Models.base_model import BaseModel
 from typing import Optional, List
 from datetime import datetime
 
-
 class Fornecedor(BaseModel):
     """
     Modelo de Fornecedor
