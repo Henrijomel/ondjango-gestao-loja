@@ -1,0 +1,49 @@
+# requirements.txt
+# Ondjango - Gestão de Loja
+# Dependencies for Python Backend
+
+# Flask Framework
+Flask==2.3.3
+Flask-CORS==4.0.0
+python-dotenv==1.0.0
+
+# Database
+mysql-connector-python==8.0.33
+SQLAlchemy==2.0.20
+
+# Data Validation & Serialization
+marshmallow==3.20.1
+pydantic==2.3.0
+
+# API & HTTP
+requests==2.31.0
+urllib3==2.0.4
+
+# Authentication & Security
+PyJWT==2.8.0
+python-jose==3.3.0
+passlib==1.7.4
+bcrypt==4.0.1
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
+click==8.1.7
+
+# Development & Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+black==23.9.1
+flake8==6.0.0
+pylint==2.17.5
+
+# Production Server
+gunicorn==21.2.0
+waitress==2.1.2
+
+# Optional: For async support
+asynci==3.4.3
+
+# Optional: For PDF/Excel export
+openpyxl==3.1.2
+reportlab==4.0.4
